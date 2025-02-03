@@ -26,6 +26,33 @@ function makeQuestion() {
     currQuestion.value = question;
 }
 
+function checkAnswer(answer: string, question: string) {
+    let questionImportant: string = "";
+    let isInQuotations = false;
+    let questionArr = question.split("");
+    questionArr.forEach((e) => {
+        if (e === "'") {
+            isInQuotations = !isInQuotations;
+        }
+        if (isInQuotations && e != "'") {
+            questionImportant += e;
+        }
+    });
+    console.log(answer, questionImportant);
+
+    if (questionType.value == "morse") {
+        let helpMeSwapValues = answer;
+        answer = questionImportant;
+        questionImportant = helpMeSwapValues;
+    }
+
+    if (morseObjTyped[answer.toUpperCase()] === questionImportant) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function typeInField(event: KeyboardEvent) {
     let charsArr: string[] = [
         "Enter",
@@ -61,8 +88,10 @@ function typeInField(event: KeyboardEvent) {
 }
 
 function submit() {
-    makeQuestion();
+    let isCorrect = checkAnswer(inputValue.value, currQuestion.value);
+    console.log("Correct?", isCorrect);
     inputValue.value = "";
+    makeQuestion();
 }
 
 makeQuestion();
