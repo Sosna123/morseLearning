@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import morseObj from "../objects.ts";
+import { morseObj } from "../objects.ts";
+
+const emit = defineEmits(["showAnswer"]);
 
 interface MorseObj {
     [key: string]: string;
@@ -18,10 +20,10 @@ function makeQuestion() {
     let question: string;
     if (Math.round(Math.random()) === 1) {
         questionType.value = "morse";
-        question = `Type '${letter}' in morse code`;
+        question = `What\`s '${letter}' in morse code?`;
     } else {
         questionType.value = "alphabet";
-        question = `Translate the letter '${morseObjTyped[letter]}' from morse code`;
+        question = `What letter is '${morseObjTyped[letter]}'`;
     }
     currQuestion.value = question;
 }
@@ -31,9 +33,6 @@ function checkAnswer(answer: string, question: string) {
     let isInQuotations = false;
     let questionArr = question.split("");
 
-    answer = answer.toUpperCase();
-    questionImportant = questionImportant.toUpperCase();
-
     questionArr.forEach((e) => {
         if (e === "'") {
             isInQuotations = !isInQuotations;
@@ -42,7 +41,14 @@ function checkAnswer(answer: string, question: string) {
             questionImportant += e;
         }
     });
-    console.log(answer, questionImportant);
+
+    answer = answer.toUpperCase();
+    questionImportant = questionImportant.toUpperCase();
+    let emitObj = {
+        answer: answer,
+        question: questionImportant,
+        correct: false,
+    };
 
     if (questionType.value == "morse") {
         let helpMeSwapValues = answer;
@@ -50,11 +56,10 @@ function checkAnswer(answer: string, question: string) {
         questionImportant = helpMeSwapValues;
     }
 
-    if (morseObjTyped[answer] === questionImportant) {
-        return true;
-    } else {
-        return false;
-    }
+    emitObj.correct = morseObjTyped[answer] === questionImportant;
+    emit("showAnswer", emitObj);
+
+    return morseObjTyped[answer] === questionImportant;
 }
 
 function typeInField(event: KeyboardEvent) {

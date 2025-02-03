@@ -1,4 +1,4 @@
-const morseObj = {
+export const morseObj = {
     A: ".-",
     B: "-...",
     C: "-.-.",
@@ -36,5 +36,3 @@ const morseObj = {
     9: "----.",
     0: "-----",
 };
-
-export default morseObj;
