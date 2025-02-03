@@ -30,6 +30,10 @@ function checkAnswer(answer: string, question: string) {
     let questionImportant: string = "";
     let isInQuotations = false;
     let questionArr = question.split("");
+
+    answer = answer.toUpperCase();
+    questionImportant = questionImportant.toUpperCase();
+
     questionArr.forEach((e) => {
         if (e === "'") {
             isInQuotations = !isInQuotations;
@@ -46,7 +50,7 @@ function checkAnswer(answer: string, question: string) {
         questionImportant = helpMeSwapValues;
     }
 
-    if (morseObjTyped[answer.toUpperCase()] === questionImportant) {
+    if (morseObjTyped[answer] === questionImportant) {
         return true;
     } else {
         return false;
