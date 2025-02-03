@@ -15,7 +15,7 @@ let questionType = ref<null | "morse" | "alphabet">(null);
 
 function makeQuestion() {
     // ? temporary array; to be replaced with letters and level
-    let tempArr: string[] = ["E", "T", "M", "A", "I"];
+    let tempArr: string[] = JSON.parse(localStorage.getItem("learntLetters")!);
     let letter = tempArr[Math.round(Math.random() * (tempArr.length - 1))];
     let question: string;
     if (Math.round(Math.random()) === 1) {

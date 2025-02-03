@@ -11,8 +11,6 @@ const props = defineProps<{
 
 const emit = defineEmits(["hideAnswer"]);
 
-function changeText() {}
-
 function changeClass() {
     return props.correct ? "correctAnswer" : "wrongAnswer";
 }

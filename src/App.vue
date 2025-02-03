@@ -22,6 +22,11 @@ function showAnswerFunc(info: {
     correctAnswer.value = info.correct;
     newEmitAnswer.value++;
 }
+
+// init
+if (localStorage.getItem("learntLetters") === null) {
+    localStorage.setItem("learntLetters", JSON.stringify(["E", "T"]));
+}
 </script>
 
 <template>
