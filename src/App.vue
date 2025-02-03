@@ -1,10 +1,19 @@
 <script setup lang="ts">
-import Testing from "./components/Testing.vue";
+import { ref } from "vue";
+import Question from "./components/Question.vue";
 import Progress from "./components/Progress.vue";
+import Answer from "./components/Answer.vue";
+
+let showQuestion = ref<boolean>(true);
 </script>
 
 <template>
-    <Testing />
+    <div v-show="showQuestion">
+        <Question />
+    </div>
+    <div v-show="!showQuestion">
+        <Answer />
+    </div>
     <Progress />
 </template>
 
