@@ -107,15 +107,40 @@ makeQuestion();
 </script>
 
 <template>
-    <div>
-        <h1>Testing</h1>
-        <h2>{{ currQuestion }}</h2>
-        <v-text-field
-            label="Type in your answer"
-            v-model="inputValue"
-            @keyup="typeInField($event)"></v-text-field>
-        <v-btn @click="submit()">submit</v-btn>
+    <div class="questionBg">
+        <div class="questionContainer">
+            <h2>{{ currQuestion }}</h2>
+            <v-text-field
+                label="Type in your answer"
+                v-model="inputValue"
+                @keyup="typeInField($event)"
+                theme="dark"
+                variant="underlined"></v-text-field>
+            <v-btn @click="submit()" theme="dark">submit</v-btn>
+        </div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.questionBg {
+    color: white;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #424242; /* grey-darken-3 */
+}
+
+.questionContainer {
+    z-index: 1;
+    text-align: center;
+    width: 50%;
+}
+
+h2 {
+    margin-top: 0;
+    font-weight: normal;
+}
+</style>

@@ -25,17 +25,16 @@ function showAnswerFunc(info: {
 </script>
 
 <template>
-    <div v-show="showQuestion">
-        <Question @showAnswer="(info) => showAnswerFunc(info)" />
-    </div>
-    <div v-show="!showQuestion">
+    <div>
         <Answer
+            v-show="!showQuestion"
             :question="questionAnswer"
             :answer="answerAnswer"
             :correct="correctAnswer"
             :newEmit="newEmitAnswer"
             @hideAnswer="showQuestion = true" />
     </div>
+    <Question @showAnswer="(info) => showAnswerFunc(info)" />
     <Progress />
 </template>
 
