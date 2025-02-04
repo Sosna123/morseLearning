@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { morseObj } from "../objects.ts";
+import { morseObj, unlockLetters } from "../objects.ts";
 
 const emit = defineEmits(["showAnswer"]);
 
@@ -12,11 +12,14 @@ const morseObjTyped: MorseObj = morseObj;
 let inputValue = ref<string>("");
 let currQuestion = ref<string>("");
 let questionType = ref<null | "morse" | "alphabet">(null);
+let xp = parseInt(localStorage.getItem("xp")!);
 
 function makeQuestion() {
-    // ? temporary array; to be replaced with letters and level
-    let tempArr: string[] = JSON.parse(localStorage.getItem("learntLetters")!);
-    let letter = tempArr[Math.round(Math.random() * (tempArr.length - 1))];
+    let learntLetters: string[] = JSON.parse(
+        localStorage.getItem("learntLetters")!
+    );
+    let letter =
+        learntLetters[Math.round(Math.random() * (learntLetters.length - 1))];
     let question: string;
     if (Math.round(Math.random()) === 1) {
         questionType.value = "morse";
@@ -58,6 +61,31 @@ function checkAnswer(answer: string, question: string) {
 
     emitObj.correct = morseObjTyped[answer] === questionImportant;
     emit("showAnswer", emitObj);
+
+    morseObjTyped[answer] === questionImportant
+        ? (xp += 2)
+        : xp > 0
+        ? (xp -= 1)
+        : xp;
+    localStorage.setItem("xp", xp.toString());
+
+    if (xp >= 100) {
+        let level: number = parseInt(localStorage.getItem("level")!);
+        level++;
+        localStorage.setItem("level", level.toString());
+
+        xp = 0;
+        localStorage.setItem("xp", xp.toString());
+
+        let tempLettersLearnt: string[] = JSON.parse(
+            localStorage.getItem("learntLetters")!
+        );
+        tempLettersLearnt.push(unlockLetters[level - 1]);
+        localStorage.setItem(
+            "learntLetters",
+            JSON.stringify(tempLettersLearnt)
+        );
+    }
 
     return morseObjTyped[answer] === questionImportant;
 }

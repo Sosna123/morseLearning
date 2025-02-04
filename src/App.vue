@@ -26,6 +26,8 @@ function showAnswerFunc(info: {
 // init
 if (localStorage.getItem("learntLetters") === null) {
     localStorage.setItem("learntLetters", JSON.stringify(["E", "T"]));
+    localStorage.setItem("xp", "0");
+    localStorage.setItem("level", "1");
 }
 </script>
 

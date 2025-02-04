@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { morseObj } from "../objects.ts";
 const lettersDisplay: string[] = [];
 let learntLetters = JSON.parse(localStorage.getItem("learntLetters")!);
@@ -6,15 +7,25 @@ let learntLetters = JSON.parse(localStorage.getItem("learntLetters")!);
 Object.entries(morseObj).forEach(([key, _value]) => {
     lettersDisplay.push(key);
 });
+
+let xp = ref<number>(0);
+let level = ref<number>(1);
+
+function updateBar() {
+    xp.value = parseInt(localStorage.getItem("xp")!) ?? 0;
+    level.value = parseInt(localStorage.getItem("level")!) ?? 1;
+}
+
+setInterval(() => updateBar(), 10);
 </script>
 
 <template>
     <div class="progressContainer">
         <div>
             <div class="progressBarDiv">
-                <span>Your level: 1</span>
+                <span>Your level: {{ level }}</span>
                 <v-progress-linear
-                    model-value="20"
+                    :model-value="xp"
                     :height="16"></v-progress-linear>
             </div>
             <div class="progressLetterSpans">

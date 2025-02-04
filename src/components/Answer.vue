@@ -54,7 +54,7 @@ watch(
                 <h2>Your answer: {{ props.answer }}</h2>
                 <h2>Correct answer: {{ checkCorrectAnswer() }}</h2>
                 <h3 :class="changeClass()">
-                    {{ props.correct ? "Correct" : "Incorrect" }}
+                    {{ props.correct ? "Correct +2xp" : "Incorrect -1xp" }}
                 </h3>
                 <v-btn @click="$emit('hideAnswer')" theme="dark">back</v-btn>
             </div>
