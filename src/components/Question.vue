@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { morseObj, unlockLetters } from "../objects.ts";
+import { morseObj, unlockLetters, levelProgress } from "../objects.ts";
 
 const emit = defineEmits(["showAnswer", "showLevelUp"]);
 
@@ -19,7 +19,7 @@ function makeQuestion() {
         localStorage.getItem("learntLetters")!
     );
     let letter =
-        learntLetters[Math.round(Math.random() * (learntLetters.length - 1))];
+        learntLetters[Math.trunc(Math.random() * (learntLetters.length - 1))];
     let question: string;
     if (Math.round(Math.random()) === 1) {
         questionType.value = "morse";
@@ -69,14 +69,21 @@ function checkAnswer(answer: string, question: string) {
         : xp;
     localStorage.setItem("xp", xp.toString());
 
-    if (xp >= 100) {
+    if (
+        xp >=
+        levelProgress[Math.min(parseInt(localStorage.getItem("level")!) - 1, 8)]
+    ) {
         emitObj.levelUp = true;
 
         let level: number = parseInt(localStorage.getItem("level")!);
         level++;
         localStorage.setItem("level", level.toString());
 
-        xp = 0;
+        xp =
+            xp -
+            levelProgress[
+                Math.min(parseInt(localStorage.getItem("level")!) - 2, 8)
+            ];
         localStorage.setItem("xp", xp.toString());
 
         let learntLetters: string[] = JSON.parse(

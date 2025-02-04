@@ -4,9 +4,11 @@ import Question from "./components/Question.vue";
 import Progress from "./components/Progress.vue";
 import Answer from "./components/Answer.vue";
 import LevelUp from "./components/LevelUp.vue";
+import Introduction from "./components/Introduction.vue";
 
 let showAnswer = ref<boolean>(false);
 let showLevelUp = ref<boolean>(false);
+let showIntroduction = ref<boolean>(false);
 
 let newEmitAnswer = ref<number>(0);
 let newEmitLevelUp = ref<number>(0);
@@ -35,14 +37,22 @@ function showLevelUpFunc() {
 }
 
 // init
-if (localStorage.getItem("learntLetters") === null) {
+if (
+    localStorage.getItem("learntLetters") === null ||
+    localStorage.getItem("xp") === null ||
+    localStorage.getItem("level") === null
+) {
     localStorage.setItem("learntLetters", JSON.stringify(["E", "T"]));
     localStorage.setItem("xp", "0");
     localStorage.setItem("level", "1");
+    showIntroduction.value = true;
 }
 </script>
 
 <template>
+    <div v-show="showIntroduction">
+        <Introduction @hideIntroduction="showIntroduction = false" />
+    </div>
     <div v-show="showLevelUp">
         <LevelUp
             :newEmitLevelUp="newEmitLevelUp"
