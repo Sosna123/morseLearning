@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { morseObj, unlockLetters } from "../objects.ts";
 
-const emit = defineEmits(["showAnswer"]);
+const emit = defineEmits(["showAnswer", "showLevelUp"]);
 
 interface MorseObj {
     [key: string]: string;
@@ -51,6 +51,7 @@ function checkAnswer(answer: string, question: string) {
         answer: answer,
         question: questionImportant,
         correct: false,
+        levelUp: false,
     };
 
     if (questionType.value == "morse") {
@@ -60,7 +61,6 @@ function checkAnswer(answer: string, question: string) {
     }
 
     emitObj.correct = morseObjTyped[answer] === questionImportant;
-    emit("showAnswer", emitObj);
 
     morseObjTyped[answer] === questionImportant
         ? (xp += 2)
@@ -70,6 +70,8 @@ function checkAnswer(answer: string, question: string) {
     localStorage.setItem("xp", xp.toString());
 
     if (xp >= 100) {
+        emitObj.levelUp = true;
+
         let level: number = parseInt(localStorage.getItem("level")!);
         level++;
         localStorage.setItem("level", level.toString());
@@ -77,16 +79,14 @@ function checkAnswer(answer: string, question: string) {
         xp = 0;
         localStorage.setItem("xp", xp.toString());
 
-        let tempLettersLearnt: string[] = JSON.parse(
+        let learntLetters: string[] = JSON.parse(
             localStorage.getItem("learntLetters")!
         );
-        tempLettersLearnt.push(unlockLetters[level - 1]);
-        localStorage.setItem(
-            "learntLetters",
-            JSON.stringify(tempLettersLearnt)
-        );
+        learntLetters.push(unlockLetters[level - 1]);
+        localStorage.setItem("learntLetters", JSON.stringify(learntLetters));
     }
 
+    emit("showAnswer", emitObj);
     return morseObjTyped[answer] === questionImportant;
 }
 

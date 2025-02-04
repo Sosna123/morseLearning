@@ -3,24 +3,35 @@ import { ref } from "vue";
 import Question from "./components/Question.vue";
 import Progress from "./components/Progress.vue";
 import Answer from "./components/Answer.vue";
+import LevelUp from "./components/LevelUp.vue";
 
-let showQuestion = ref<boolean>(true);
+let showAnswer = ref<boolean>(false);
+let showLevelUp = ref<boolean>(false);
+
+let newEmitAnswer = ref<number>(0);
+let newEmitLevelUp = ref<number>(0);
 
 let answerAnswer = ref<string>("");
 let questionAnswer = ref<string>("");
 let correctAnswer = ref<boolean>(false);
-let newEmitAnswer = ref<number>(0);
+let levelUpAnswer = ref<boolean>(false);
 
 function showAnswerFunc(info: {
     answer: string;
     question: string;
     correct: boolean;
+    levelUp: boolean;
 }) {
-    showQuestion.value = false;
+    showAnswer.value = true;
     questionAnswer.value = info.question;
     answerAnswer.value = info.answer;
     correctAnswer.value = info.correct;
     newEmitAnswer.value++;
+    levelUpAnswer.value = info.levelUp;
+}
+function showLevelUpFunc() {
+    showLevelUp.value = true;
+    newEmitLevelUp.value++;
 }
 
 // init
@@ -32,14 +43,20 @@ if (localStorage.getItem("learntLetters") === null) {
 </script>
 
 <template>
-    <div>
+    <div v-show="showLevelUp">
+        <LevelUp
+            :newEmitLevelUp="newEmitLevelUp"
+            @hideLevelUp="showLevelUp = false" />
+    </div>
+    <div v-show="showAnswer">
         <Answer
-            v-show="!showQuestion"
             :question="questionAnswer"
             :answer="answerAnswer"
             :correct="correctAnswer"
             :newEmit="newEmitAnswer"
-            @hideAnswer="showQuestion = true" />
+            :levelUp="levelUpAnswer"
+            @hideAnswer="showAnswer = false"
+            @showLevelUp="showLevelUpFunc()" />
     </div>
     <Question @showAnswer="(info) => showAnswerFunc(info)" />
     <Progress />

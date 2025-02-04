@@ -6,10 +6,11 @@ const props = defineProps<{
     question: string;
     answer: string;
     correct: boolean;
+    levelUp: boolean;
     newEmit: number;
 }>();
 
-const emit = defineEmits(["hideAnswer"]);
+const emit = defineEmits(["hideAnswer", "showLevelUp"]);
 
 function changeClass() {
     return props.correct ? "correctAnswer" : "wrongAnswer";
@@ -38,6 +39,13 @@ function checkCorrectAnswer() {
     return returnValue;
 }
 
+function hideAnswer() {
+    emit("hideAnswer");
+    if (props.levelUp) {
+        emit("showLevelUp");
+    }
+}
+
 watch(
     () => props.newEmit,
     () => {
@@ -56,7 +64,7 @@ watch(
                 <h3 :class="changeClass()">
                     {{ props.correct ? "Correct +2xp" : "Incorrect -1xp" }}
                 </h3>
-                <v-btn @click="$emit('hideAnswer')" theme="dark">back</v-btn>
+                <v-btn @click="hideAnswer()" theme="dark">back</v-btn>
             </div>
         </div>
     </div>
@@ -71,7 +79,7 @@ watch(
 }
 
 .answerBg {
-    z-index: 2;
+    z-index: 4;
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.75);
@@ -79,7 +87,7 @@ watch(
 }
 .answerContainer {
     color: white;
-    z-index: 3;
+    z-index: 5;
     background-color: #424242; /* grey-darken-3 */
     width: 30%;
     height: 40%;
