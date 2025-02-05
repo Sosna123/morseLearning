@@ -19,7 +19,7 @@ function makeQuestion() {
         localStorage.getItem("learntLetters")!
     );
     let letter =
-        learntLetters[Math.trunc(Math.random() * (learntLetters.length - 1))];
+        learntLetters[Math.round(Math.random() * (learntLetters.length - 1))];
     let question: string;
     if (Math.round(Math.random()) === 1) {
         questionType.value = "morse";
