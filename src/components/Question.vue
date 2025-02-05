@@ -4,6 +4,10 @@ import { morseObj, unlockLetters, levelProgress } from "../objects.ts";
 
 const emit = defineEmits(["showAnswer", "showLevelUp"]);
 
+const props = defineProps<{
+    showPopup: boolean;
+}>();
+
 interface MorseObj {
     [key: string]: string;
 }
@@ -105,15 +109,18 @@ function typeInField(event: KeyboardEvent) {
         "ArrowLeft",
         "ArrowRight",
     ];
+
+    if (event.key === "Enter" && !props.showPopup) {
+        submit();
+        return;
+    }
+
     if (questionType.value == "morse") {
         if (!(event.key.match(/[.-]/) || charsArr.includes(event.key))) {
             let inputValueArr = inputValue.value.split("");
             inputValueArr.pop();
             inputValue.value = inputValueArr.join("");
             return;
-        }
-        if (event.key === "Enter") {
-            submit();
         }
     } else {
         if (!(event.key.match(/[a-zA-Z0-9]/) || charsArr.includes(event.key))) {
@@ -124,9 +131,6 @@ function typeInField(event: KeyboardEvent) {
         }
         if (inputValue.value.length > 1) {
             inputValue.value = event.key;
-        }
-        if (event.key === "Enter") {
-            submit();
         }
     }
 }

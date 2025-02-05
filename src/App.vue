@@ -68,7 +68,9 @@ if (
             @hideAnswer="showAnswer = false"
             @showLevelUp="showLevelUpFunc()" />
     </div>
-    <Question @showAnswer="(info) => showAnswerFunc(info)" />
+    <Question
+        :showPopup="showAnswer || showLevelUp || showIntroduction"
+        @showAnswer="(info) => showAnswerFunc(info)" />
     <Progress />
 </template>
 

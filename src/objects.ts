@@ -74,6 +74,4 @@ export const unlockLetters: string[] = [
     "0",
 ];
 
-export const levelProgress: number[] = [
-    50, 50, 100, 100, 150, 150, 300, 300, 500,
-];
+export const levelProgress: number[] = [25, 25, 50, 50, 75, 75, 100, 125, 150];
