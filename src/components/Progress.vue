@@ -14,6 +14,7 @@ let barPrecentage = ref<number>(0);
 let level = ref<number>(1);
 
 function updateBar() {
+    learntLetters = JSON.parse(localStorage.getItem("learntLetters")!);
     xp.value = parseInt(localStorage.getItem("xp")!) ?? 0;
     level.value = parseInt(localStorage.getItem("level")!) ?? 1;
     maxXp.value =
@@ -38,11 +39,16 @@ setInterval(() => updateBar(), 100);
             <div class="progressLetterSpans">
                 <span
                     v-for="letter in lettersDisplay"
-                    :class="
+                    :class="{
+                        letterLearnt: learntLetters.includes(letter),
+                        letterNotLearnt: !learntLetters.includes(letter),
+                    }"
+                    class="letterSpan">
+                    <!-- :class="
                         learntLetters.includes(letter)
                             ? 'letterLearnt letterSpan'
                             : 'letterNotLearnt letterSpan'
-                    ">
+                    "> -->
                     {{ letter }}
                 </span>
             </div>
