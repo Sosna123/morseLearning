@@ -31,9 +31,16 @@ function showAnswerFunc(info: {
     newEmitAnswer.value++;
     levelUpAnswer.value = info.levelUp;
 }
+
 function showLevelUpFunc() {
     showLevelUp.value = true;
     newEmitLevelUp.value++;
+}
+
+function closePopups() {
+    showAnswer.value = false;
+    showLevelUp.value = false;
+    showIntroduction.value = false;
 }
 
 // init
@@ -70,7 +77,8 @@ if (
     </div>
     <Question
         :showPopup="showAnswer || showLevelUp || showIntroduction"
-        @showAnswer="(info) => showAnswerFunc(info)" />
+        @showAnswer="(info) => showAnswerFunc(info)"
+        @closeAllPopups="closePopups()" />
     <Progress />
 </template>
 

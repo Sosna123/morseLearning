@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { morseObj, unlockLetters, levelProgress } from "../objects.ts";
 
-const emit = defineEmits(["showAnswer", "showLevelUp"]);
+const emit = defineEmits(["showAnswer", "showLevelUp", "closeAllPopups"]);
 
 const props = defineProps<{
     showPopup: boolean;
@@ -110,9 +110,14 @@ function typeInField(event: KeyboardEvent) {
         "ArrowRight",
     ];
 
-    if (event.key === "Enter" && !props.showPopup) {
-        submit();
-        return;
+    if (event.key === "Enter") {
+        if (!props.showPopup) {
+            submit();
+            return;
+        } else {
+            emit("closeAllPopups");
+            return;
+        }
     }
 
     if (questionType.value == "morse") {
