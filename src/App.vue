@@ -41,6 +41,10 @@ function closePopups() {
     showAnswer.value = false;
     showLevelUp.value = false;
     showIntroduction.value = false;
+    if (levelUpAnswer.value) {
+        showLevelUp.value = true;
+        levelUpAnswer.value = false;
+    }
 }
 
 // init
